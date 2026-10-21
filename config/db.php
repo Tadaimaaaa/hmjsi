@@ -1,10 +1,21 @@
 <?php
-// Deteksi variabel Railway (jika ada), jika tidak gunakan lokal XAMPP
-$host = getenv('MYSQLHOST') ?: 'localhost';
-$db   = getenv('MYSQLDATABASE') ?: 'hmjsi';
-$user = getenv('MYSQLUSER') ?: 'root';
-$pass = getenv('MYSQLPASSWORD') ?: '';
-$port = getenv('MYSQLPORT') ?: '3306';
+$is_local = (isset($_SERVER['HTTP_HOST']) && (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '127.0.0.1'))) || php_sapi_name() === 'cli';
+
+if ($is_local) {
+    // Database Lokal (XAMPP)
+    $host = 'localhost';
+    $db   = 'hmjsi';
+    $user = 'root';
+    $pass = '';
+    $port = '3306';
+} else {
+    // Database Hosting (InfinityFree / Cloud)
+    $host = getenv('MYSQLHOST') ?: 'sql109.infinityfree.com';
+    $db   = getenv('MYSQLDATABASE') ?: 'if0_43237968_hmjsi';
+    $user = getenv('MYSQLUSER') ?: 'if0_43237968';
+    $pass = getenv('MYSQLPASSWORD') ?: 'Arifazuria123';
+    $port = getenv('MYSQLPORT') ?: '3306';
+}
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
